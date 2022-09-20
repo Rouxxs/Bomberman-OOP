@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Bomber;
@@ -29,7 +30,7 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     private Keyboard inputHandler = new Keyboard();
-    private Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
+    private Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
 
 
 
@@ -87,7 +88,6 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
-        bomberman.move(inputHandler.getActiveKeys());
     }
 
     public void render() {

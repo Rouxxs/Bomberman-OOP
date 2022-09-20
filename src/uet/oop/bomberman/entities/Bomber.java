@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.Const;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.input.Keyboard;
 
 import java.util.Set;
 
@@ -13,32 +14,35 @@ public class Bomber extends AnimatedEntity {
     private float dy = 0;
     private int _direction;
     private boolean _moving;
-    public Bomber(int x, int y, Image img) {
+    private Keyboard input;
+    public Bomber(int x, int y, Image img, Keyboard keyboard) {
         super( x, y, img);
         _moving = false;
+        input = keyboard;
     }
 
     @Override
     public void update() {
+        move();
         animate();
         changeImg();
     }
 
     /** Di chuyển Bomber. */
-    public void move(Set<KeyCode> activeKeys) //initiates/continues movement, should be called every frame
+    public void move() //initiates/continues movement, should be called every frame
     {
         dx = 0;
         dy = 0;
-        if(activeKeys.contains(KeyCode.W)) {
+        if(input.getActiveKeys().contains(KeyCode.W)) {
             dy -= Const.MOVINGSPEED;
             _direction = 0;
-        } else if(activeKeys.contains(KeyCode.S)) {
+        } else if(input.getActiveKeys().contains(KeyCode.S)) {
             dy = Const.MOVINGSPEED;
             _direction = 1;
-        } else if(activeKeys.contains(KeyCode.A)) {
+        } else if(input.getActiveKeys().contains(KeyCode.A)) {
             dx -= Const.MOVINGSPEED;
             _direction = 2;
-        } else if(activeKeys.contains(KeyCode.D)) {
+        } else if(input.getActiveKeys().contains(KeyCode.D)) {
             dx = Const.MOVINGSPEED;
             _direction = 3;
         }

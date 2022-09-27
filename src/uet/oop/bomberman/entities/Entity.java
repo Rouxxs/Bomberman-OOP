@@ -12,11 +12,11 @@ import java.util.Set;
 
 public abstract class Entity {
     //Tọa độ X tính từ góc trái trên trong Canvas
-    protected int x;
+    protected float x;
 
     //Tọa độ Y tính từ góc trái trên trong Canvas
-    protected int y;
-
+    protected float y;
+    protected boolean _removed = false;
     protected Image img;
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
@@ -31,5 +31,20 @@ public abstract class Entity {
     }
     public abstract void update();
 
+    public abstract boolean collide(Entity e);
+    public void remove() {
+        _removed = true;
+    }
 
+    public boolean isRemoved() {
+        return _removed;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 }

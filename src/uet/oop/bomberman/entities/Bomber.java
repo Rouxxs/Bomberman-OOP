@@ -1,12 +1,12 @@
 package uet.oop.bomberman.entities;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.Const;
+import uet.oop.bomberman.entities.Enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
-
-import java.util.Set;
 
 public class Bomber extends AnimatedEntity {
 
@@ -82,7 +82,39 @@ public class Bomber extends AnimatedEntity {
                     img = Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, _animate, 40).getFxImage();
                 }
                 break;
+            default:
+                img = Sprite.player_right.getFxImage();
         }
     }
 
+    @Override
+    public void render(GraphicsContext gc) {
+        if (_alive) {
+            changeImg();
+        } else {
+            img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 40).getFxImage();
+        }
+
+        gc.drawImage(img, x, y);
+    }
+
+    @Override
+    public void kill() {
+        if (!_alive) return;
+        _alive = false;
+    }
+
+    @Override
+    protected void afterKill() {
+        if (_timeAfter > 0) --_timeAfter;
+    }
+
+    @Override
+    public boolean collide(Entity e) {
+        if (e instanceof Enemy)
+        {
+            kill();
+        }
+        return true;
+    }
 }

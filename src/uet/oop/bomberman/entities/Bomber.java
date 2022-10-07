@@ -3,10 +3,14 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Const;
 import uet.oop.bomberman.entities.Enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.level.FileLevelLoad;
 
 public class Bomber extends AnimatedEntity {
 
@@ -46,13 +50,34 @@ public class Bomber extends AnimatedEntity {
             dx = Const.MOVINGSPEED;
             _direction = 3;
         }
+
         if(dx != 0 || dy != 0) {
             _moving = true;
-            x += dx;
-            y += dy;
+
+
+            if (canMove(dx, 0)) {
+                x += dx;
+            }if (canMove(0, dy)) {
+                y += dy;
+            }
+            ///System.out.println(String.format("Bomber: (" + x + ", " + y +")"));
         } else {
             _moving = false;
         }
+    }
+
+    private boolean canMove(float x, float y) {
+            float xt = (this.x + x + 1);
+            float yt = (this.y + y + 1);
+
+            System.out.println(String.format("X:" + xt + ", Y:" + yt));
+
+            if (BombermanGame.solidTouch(xt, yt, 35, 44)) return false;
+//            if (e instanceof Wall || e instanceof Brick) {
+//                return false;
+//            }
+
+        return true;
     }
 
     /** Đổi ảnh dựa trên hướng đi và animation. */
@@ -96,6 +121,7 @@ public class Bomber extends AnimatedEntity {
         }
 
         gc.drawImage(img, x, y);
+        gc.strokeRect(x, y, 35, 44);
     }
 
     @Override

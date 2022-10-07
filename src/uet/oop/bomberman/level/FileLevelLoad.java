@@ -15,7 +15,7 @@ public class FileLevelLoad {
     private int level;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
-    private static char[][] map;
+    public static char[][] map;
 
     public FileLevelLoad(List<Entity> entities, List<Entity> stillObjects) {
         this.entities = entities;
@@ -52,16 +52,16 @@ public class FileLevelLoad {
                 //System.out.print(c);
                 switch (c) {
                     case '#':
-                        Wall w =  new Wall(j, i + 1, Sprite.wall.getFxImage());
+                        Wall w =  new Wall(j, i, Sprite.wall.getFxImage());
                         stillObjects.add(w);
                         break;
                     case '*':
-                        Brick b = new Brick(j, i + 1, Sprite.brick.getFxImage());
+                        Brick b = new Brick(j, i, Sprite.brick.getFxImage());
                         stillObjects.add(b);
                         break;
 
                     default:
-                        Grass g = new Grass(j, i + 1, Sprite.grass.getFxImage());
+                        Grass g = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(g);
                         break;
                 }

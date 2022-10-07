@@ -54,10 +54,11 @@ public class Bomber extends AnimatedEntity {
         if(dx != 0 || dy != 0) {
             _moving = true;
 
-
             if (canMove(dx, 0)) {
+                BombermanGame.doCamera(dx);
                 x += dx;
-            }if (canMove(0, dy)) {
+            }
+            if (canMove(0, dy)) {
                 y += dy;
             }
             ///System.out.println(String.format("Bomber: (" + x + ", " + y +")"));
@@ -70,7 +71,7 @@ public class Bomber extends AnimatedEntity {
             float xt = (this.x + x + 1);
             float yt = (this.y + y + 1);
 
-            System.out.println(String.format("X:" + xt + ", Y:" + yt));
+            //System.out.println(String.format("X:" + xt + ", Y:" + yt));
 
             if (BombermanGame.solidTouch(xt, yt, 35, 44)) return false;
 //            if (e instanceof Wall || e instanceof Brick) {

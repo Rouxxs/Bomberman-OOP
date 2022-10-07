@@ -6,7 +6,7 @@ public class Const {
         Running,Paused,GameOver
     }
 
-    public static int canvasWidth = 31;
+    public static int canvasWidth = 18;
     public static int canvasHeight = 13;
 
     public static int mapWidth = 31;

@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    private GraphicsContext gc;
+    public static GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
-    private Keyboard inputHandler = new Keyboard();
-    private Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
+    private static Keyboard inputHandler = new Keyboard();
+    private static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -94,5 +94,12 @@ public class BombermanGame extends Application {
             }
         }
         return false;
+    }
+
+    public static void doCamera(float x) {
+        if (bomberman.getX() > Const.canvasWidth * Sprite.SCALED_SIZE / 2
+                && bomberman.getX() < (Const.mapWidth - Const.canvasWidth/2) * Sprite.SCALED_SIZE) {
+            gc.translate(-x, 0);
+        }
     }
 }

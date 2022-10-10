@@ -13,45 +13,54 @@ import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
 
 public class Bomber extends AnimatedEntity {
-
+//int i = 0;
     private float dx = 0;
     private float dy = 0;
     private int _direction;
     private boolean _moving;
     private Keyboard input;
+    private int timeBetweenPutBombs = 0;
+
     public Bomber(int x, int y, Image img, Keyboard keyboard) {
-        super( x, y, img);
+        super(x, y, img);
         _moving = false;
         input = keyboard;
+        solid = false;
     }
 
     @Override
     public void update() {
+        if (timeBetweenPutBombs < -7500) timeBetweenPutBombs = 0;
+        else timeBetweenPutBombs--;
         move();
         animate();
         changeImg();
+        detectPlaceBomb();
     }
 
-    /** Di chuyển Bomber. */
+    /**
+     * Di chuyển Bomber.
+     */
     public void move() //initiates/continues movement, should be called every frame
     {
         dx = 0;
         dy = 0;
-        if(input.getActiveKeys().contains(KeyCode.W)) {
+        if (input.getActiveKeys().contains(KeyCode.W)) {
             dy -= Const.MOVINGSPEED;
             _direction = 0;
-        } else if(input.getActiveKeys().contains(KeyCode.S)) {
+        } else if (input.getActiveKeys().contains(KeyCode.S)) {
+
             dy = Const.MOVINGSPEED;
             _direction = 1;
-        } else if(input.getActiveKeys().contains(KeyCode.A)) {
+        } else if (input.getActiveKeys().contains(KeyCode.A)) {
             dx -= Const.MOVINGSPEED;
             _direction = 2;
-        } else if(input.getActiveKeys().contains(KeyCode.D)) {
+        } else if (input.getActiveKeys().contains(KeyCode.D)) {
             dx = Const.MOVINGSPEED;
             _direction = 3;
         }
 
-        if(dx != 0 || dy != 0) {
+        if (dx != 0 || dy != 0) {
             _moving = true;
 
             if (canMove(dx, 0)) {
@@ -68,12 +77,12 @@ public class Bomber extends AnimatedEntity {
     }
 
     private boolean canMove(float x, float y) {
-            float xt = (this.x + x + 1);
-            float yt = (this.y + y + 1);
+        float xt = (this.x + x + 1);
+        float yt = (this.y + y + 1);
 
-            //System.out.println(String.format("X:" + xt + ", Y:" + yt));
+        //System.out.println(String.format("X:" + xt + ", Y:" + yt));
 
-            if (BombermanGame.solidTouch(xt, yt, 35, 44)) return false;
+        if (BombermanGame.solidTouch(xt, yt, 35, 44)) return false;
 //            if (e instanceof Wall || e instanceof Brick) {
 //                return false;
 //            }
@@ -81,7 +90,9 @@ public class Bomber extends AnimatedEntity {
         return true;
     }
 
-    /** Đổi ảnh dựa trên hướng đi và animation. */
+    /**
+     * Đổi ảnh dựa trên hướng đi và animation.
+     */
     private void changeImg() {
         switch (_direction) {
             case 0:
@@ -138,10 +149,24 @@ public class Bomber extends AnimatedEntity {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Enemy)
-        {
+        if (e instanceof Enemy) {
             kill();
         }
         return true;
+    }
+
+    private void detectPlaceBomb() {
+        if (input.getActiveKeys().contains(KeyCode.SPACE) && timeBetweenPutBombs < 0) {
+            //System.out.println(i++);
+            int xb = Math.round(x / 48);
+            int yb = Math.round(y / 48);
+            placeBomb(xb, yb);
+            timeBetweenPutBombs = 30;
+        }
+    }
+
+    private void placeBomb(int xb, int yb) {
+        Bomb b = new Bomb(xb, yb, Sprite.bomb.getFxImage());
+        BombermanGame.stillObjects.add(b);
     }
 }

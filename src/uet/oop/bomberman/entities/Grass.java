@@ -7,6 +7,7 @@ public class Grass extends Entity {
 
     public Grass(int x, int y, Image img) {
         super(x, y, img);
+        solid = false;
     }
 
     @Override

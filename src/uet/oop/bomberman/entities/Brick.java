@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.Entity;
 public class Brick extends Entity {
     public Brick(int x, int y, Image image) {
         super(x, y, image);
+        solid = true;
     }
 
     @Override

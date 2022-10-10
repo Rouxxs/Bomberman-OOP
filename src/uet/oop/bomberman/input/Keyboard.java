@@ -15,6 +15,7 @@ public class Keyboard implements EventHandler<KeyEvent> {
     public void handle(KeyEvent event) {
         if (KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
             activeKeys.add(event.getCode());
+            //System.out.println(event.getCode());
         } else if (KeyEvent.KEY_RELEASED.equals(event.getEventType())) {
             activeKeys.remove(event.getCode());
         }
@@ -23,4 +24,6 @@ public class Keyboard implements EventHandler<KeyEvent> {
     public Set<KeyCode> getActiveKeys() {
         return activeKeys;
     }
+
+
 }

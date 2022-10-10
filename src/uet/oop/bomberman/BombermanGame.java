@@ -7,12 +7,11 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Brick;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
@@ -25,13 +24,13 @@ public class BombermanGame extends Application {
     public static GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
-    private static List<Entity> stillObjects = new ArrayList<>();
+    private static List<Bomb> bombs = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
     private static Keyboard inputHandler = new Keyboard();
-    private static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
+    public static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
-
     @Override
     public void start(Stage stage) {
         int test = 60;
@@ -62,13 +61,13 @@ public class BombermanGame extends Application {
                 GameLoop.oldGameTime = GameLoop.currentGameTime;
                 GameLoop.currentGameTime = (currentNanoTime - GameLoop.startNanoTime) / 1000000000.0;
                 GameLoop.deltaTime = GameLoop.currentGameTime - GameLoop.oldGameTime;
+//                System.out.println(GameLoop.deltaTime);
                 render();
                 update();
             }
         };
         gameLoop.start();
 
-        entities.add(bomberman);
     }
 
     public void createMap() {
@@ -76,24 +75,33 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        bomberman.update();
         entities.forEach(Entity::update);
+        stillObjects.forEach(Entity::update);
+        //System.out.println(i--);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        bomberman.render(gc);
     }
 
     /** Kiem tra xem co cham vao Wall hoac Brick hay khong. */
     public static boolean solidTouch(float x, float y, float w, float h) {
         for (Entity e : stillObjects) {
             if (Const.collision(x, y, w, h, e.getX(), e.getY(), 48,48)) {
-                if (e instanceof Wall || e instanceof Brick)
+                if (e.getSolid()) {
                     return true;
+                }
             }
         }
         return false;
+    }
+
+    public Entity getEntity(float x, float y) {
+        return null;
     }
 
     public static void doCamera(float x) {

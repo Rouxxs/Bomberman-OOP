@@ -17,9 +17,18 @@ public abstract class Entity {
 
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected float y;
+
+    protected float w = 48;
+
+    protected float h = 48;
     protected boolean _removed = false;
     protected Image img;
     protected boolean solid;
+    protected boolean touchFlame = false;
+
+    public Entity() {
+
+    }
 
     //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( float xUnit, float yUnit, Image img) {
@@ -32,7 +41,6 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-
     public abstract boolean collide(Entity e);
     public void remove() {
         _removed = true;
@@ -52,5 +60,25 @@ public abstract class Entity {
 
     public boolean getSolid() {
         return solid;
+    }
+
+    public void setH(float h) {
+        this.h = h;
+    }
+
+    public void setW(float w) {
+        this.w = w;
+    }
+
+    public float getH() {
+        return h;
+    }
+
+    public float getW() {
+        return w;
+    }
+
+    public void setTouchFlame() {
+        touchFlame = true;
     }
 }

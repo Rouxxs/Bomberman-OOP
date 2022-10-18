@@ -20,12 +20,7 @@ public abstract class AnimatedEntity extends Entity {
     @Override
     public abstract void update();
     public abstract void kill();
-    /** tính toán đường đi. */
-//    protected abstract void calculateMove();
-//    protected abstract void move();
-//
-//    /** kiểm tra xem có thể di chuyển đến tọa độ đó không. */
-//    protected abstract boolean canMove(double x, double y);
+
     public int get_direction() {
         return _direction;
     }

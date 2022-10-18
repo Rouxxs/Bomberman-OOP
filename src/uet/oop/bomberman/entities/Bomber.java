@@ -11,6 +11,7 @@ import uet.oop.bomberman.entities.Enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
+import uet.oop.bomberman.entities.bomb.Bomb;
 
 public class Bomber extends AnimatedEntity {
 //int i = 0;
@@ -20,12 +21,16 @@ public class Bomber extends AnimatedEntity {
     private boolean _moving;
     private Keyboard input;
     private int timeBetweenPutBombs = 0;
+    private int numberOfBomb = 2;
+    private int flameLength = 1;
 
     public Bomber(int x, int y, Image img, Keyboard keyboard) {
         super(x, y, img);
         _moving = false;
         input = keyboard;
         solid = false;
+        setH(44);
+        setW(35);
     }
 
     @Override
@@ -79,14 +84,13 @@ public class Bomber extends AnimatedEntity {
     private boolean canMove(float x, float y) {
         float xt = (this.x + x + 1);
         float yt = (this.y + y + 1);
-
         //System.out.println(String.format("X:" + xt + ", Y:" + yt));
 
-        if (BombermanGame.solidTouch(xt, yt, 35, 44)) return false;
+        if (BombermanGame.wallCheck(xt, yt, this.w, this.h) ||
+                BombermanGame.brickCheck(xt, yt, this.w, this.h, false)) return false;
 //            if (e instanceof Wall || e instanceof Brick) {
 //                return false;
 //            }
-
         return true;
     }
 
@@ -156,17 +160,34 @@ public class Bomber extends AnimatedEntity {
     }
 
     private void detectPlaceBomb() {
-        if (input.getActiveKeys().contains(KeyCode.SPACE) && timeBetweenPutBombs < 0) {
+        if (input.getActiveKeys().contains(KeyCode.SPACE) && timeBetweenPutBombs < 0 && numberOfBomb > 0) {
             //System.out.println(i++);
-            int xb = Math.round(x / 48);
-            int yb = Math.round(y / 48);
+            numberOfBomb--;
+            int xb = Math.round(x / Sprite.SCALED_SIZE);
+            int yb = Math.round(y / Sprite.SCALED_SIZE);
             placeBomb(xb, yb);
-            timeBetweenPutBombs = 30;
+            timeBetweenPutBombs = 60;
         }
     }
 
     private void placeBomb(int xb, int yb) {
-        Bomb b = new Bomb(xb, yb, Sprite.bomb.getFxImage());
-        BombermanGame.stillObjects.add(b);
+        Bomb b = new Bomb(xb, yb, Sprite.bomb.getFxImage(), this);
+        BombermanGame.addBomb(b);
+    }
+
+    public int getNumberOfBomb() {
+        return numberOfBomb;
+    }
+
+    public void increNumberOfBomb() {
+        this.numberOfBomb++;
+    }
+
+    public int getFlameLength() {
+        return flameLength;
+    }
+
+    public void increeFlameLength() {
+        flameLength++;
     }
 }

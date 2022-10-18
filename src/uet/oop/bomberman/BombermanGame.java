@@ -12,9 +12,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bomb.FlameSegment;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
+import uet.oop.bomberman.entities.bomb.Bomb;
 
 
 import java.util.ArrayList;
@@ -24,8 +26,11 @@ public class BombermanGame extends Application {
     public static GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
-    private static List<Bomb> bombs = new ArrayList<>();
+    private static List<Entity> bombs = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> grass = new ArrayList<>();
+    private static List<Entity> brick = new ArrayList<>();
+    private static List<Entity> wall = new ArrayList<>();
     private static Keyboard inputHandler = new Keyboard();
     public static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
     public static void main(String[] args) {
@@ -75,39 +80,98 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        List<Entity> removes = new ArrayList<>();
         bomberman.update();
-        entities.forEach(Entity::update);
-        stillObjects.forEach(Entity::update);
+        for (Entity e : entities) {
+            e.update();
+            if (e.isRemoved()) {
+                removes.add(e);
+            }
+        }
+        entities.removeAll(removes);
+        for (Entity e : brick) {
+            e.update();
+            if (e.isRemoved()) {
+                removes.add(e);
+            }
+        }
+        brick.removeAll(removes);
         //System.out.println(i--);
+        for (Entity e : bombs) {
+            e.update();
+            if (e.isRemoved()) {
+                removes.add(e);
+            }
+        }
+        bombs.removeAll(removes);
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
+        grass.forEach(g -> g.render(gc));
+        wall.forEach(g -> g.render(gc));
+        brick.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+        bombs.forEach(g-> g.render(gc));
         bomberman.render(gc);
     }
 
     /** Kiem tra xem co cham vao Wall hoac Brick hay khong. */
-    public static boolean solidTouch(float x, float y, float w, float h) {
-        for (Entity e : stillObjects) {
+
+    public static boolean wallCheck(float x, float y, float w, float h) {
+        for (Entity e : wall) {
             if (Const.collision(x, y, w, h, e.getX(), e.getY(), 48,48)) {
-                if (e.getSolid()) {
-                    return true;
-                }
+                return true;
             }
         }
         return false;
     }
 
-    public Entity getEntity(float x, float y) {
-        return null;
+    public static boolean brickCheck(float x, float y, float w, float h, boolean flame) {
+        for (Entity e : brick) {
+            if (Const.collision(x, y, w, h, e.getX(), e.getY(), 48,48)) {
+                if (flame) e.setTouchFlame();
+                return true;
+            }
+        }
+        return false;
     }
+
+    public static boolean touchBrick(float x, float y, float w, float h) {
+        for (Entity e : stillObjects) {
+            if (Const.collision(x, y, w, h, e.getX(), e.getY(), 48, 48)) {
+                if (e.getSolid()) {
+                    if (e instanceof Brick) {
+                        e.remove();
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 
     public static void doCamera(float x) {
         if (bomberman.getX() > Const.canvasWidth * Sprite.SCALED_SIZE / 2
                 && bomberman.getX() < (Const.mapWidth - Const.canvasWidth/2) * Sprite.SCALED_SIZE) {
             gc.translate(-x, 0);
         }
+    }
+
+    public static void addGrass(Entity e) {
+        grass.add(e);
+    }
+
+    public static void addBrick(Entity e) {
+        brick.add(e);
+    }
+
+    public static void addWall(Entity e) {
+        wall.add(e);
+    }
+
+    public static void addBomb(Bomb b) {
+        bombs.add(b);
     }
 }

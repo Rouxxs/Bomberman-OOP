@@ -1,9 +1,11 @@
 package uet.oop.bomberman;
 
+import uet.oop.bomberman.entities.Entity;
+
 public class Const {
     public static float MOVINGSPEED =  1;
     public static enum GameStatus {
-        Running,Paused,GameOver
+        Menu, Running, Paused, GameOver
     }
 
     public static int canvasWidth = 18;
@@ -20,6 +22,18 @@ public class Const {
             ax + aw > bx &&
             ay < by + bh &&
             ah + ay > by
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean entityColision(Entity a, Entity b) {
+        if (
+                a.getX() < b.getX() + b.getW() &&
+                        a.getX() + a.getW() > b.getX() &&
+                        a.getY() < b.getY() + b.getH() &&
+                        a.getH() + a.getY() > b.getY()
         ) {
             return true;
         }

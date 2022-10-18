@@ -53,16 +53,23 @@ public class FileLevelLoad {
                 switch (c) {
                     case '#':
                         Wall w =  new Wall(j, i, Sprite.wall.getFxImage());
+                        Grass g = new Grass(j, i, Sprite.grass.getFxImage());
+                        BombermanGame.addWall(w);
+                        BombermanGame.addGrass(g);
                         stillObjects.add(w);
                         break;
                     case '*':
                         Brick b = new Brick(j, i, Sprite.brick.getFxImage());
+                        Grass gr = new Grass(j, i, Sprite.grass.getFxImage());
+                        BombermanGame.addBrick(b);
+                        BombermanGame.addGrass(gr);
                         stillObjects.add(b);
                         break;
 
                     default:
-                        Grass g = new Grass(j, i, Sprite.grass.getFxImage());
-                        stillObjects.add(g);
+                        Grass grass = new Grass(j, i, Sprite.grass.getFxImage());
+                        BombermanGame.addGrass(grass);
+                        stillObjects.add(grass);
                         break;
                 }
             }

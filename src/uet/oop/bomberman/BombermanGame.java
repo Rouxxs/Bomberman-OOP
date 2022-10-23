@@ -3,12 +3,16 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -34,11 +38,15 @@ import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
 import uet.oop.bomberman.entities.bomb.Bomb;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    public static Scene Gamescene;
     private static GraphicsContext gc;
+    public static Scene Menuscene;
+
     private static Canvas canvas;
     private static Canvas c;
     private static List<Entity> enemy = new ArrayList<>();
@@ -56,7 +64,7 @@ public class BombermanGame extends Application {
     private static int time = 300;
     private int index = 120;
     private int delay = 120;
-    private static int sceneToShow = 0;
+    private static int sceneToShow = 3;
     private static boolean gameOver = false;
     private static boolean gameStop = false;
     private static int level = 1;
@@ -65,8 +73,28 @@ public class BombermanGame extends Application {
         Application.launch(BombermanGame.class);
     }
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         int test = 60;
+        System.out.println(getClass().getClassLoader().getResource("ui/menu.fxml").toExternalForm());
+        Parent roots = FXMLLoader.load(getClass().getClassLoader().getResource("ui/menu.fxml"));
+        stage.setTitle("Bomberman Game by Rou and Mika");
+        Scene Menuscene = new Scene(roots);
+        String css = this.getClass().getClassLoader().getResource("ui/style.css").toExternalForm();
+        Menuscene.getStylesheets().add(css);
+        stage.setScene(Menuscene);
+
+        //Them icon
+        Image image = new Image("icon.png");
+        stage.getIcons().add(image);
+
+        //chay ra man hinh menu
+        stage.show();
+
+        // Ho tro viec ALT + F4
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+            logout(stage);
+        });
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * Const.canvasWidth, Sprite.SCALED_SIZE * Const.canvasHeight);
         gc = canvas.getGraphicsContext2D();
@@ -76,18 +104,18 @@ public class BombermanGame extends Application {
         root.getChildren().add(canvas);
 
         // Tao scene
-        Scene scene = new Scene(root);
-        scene.setOnKeyPressed(inputHandler);
-        scene.setOnKeyReleased(inputHandler);
-        scene.setFill(Color.LIGHTGREEN);
+        Scene Gamescene = new Scene(root);
+        Gamescene.setOnKeyPressed(inputHandler);
+        Gamescene.setOnKeyReleased(inputHandler);
+        Gamescene.setFill(Color.LIGHTGREEN);
 
         // Them scene vao stage
-        stage.setScene(scene);
         stage.show();
 
         FileLevelLoad file = new FileLevelLoad();
         file.loadLevel(level);
         file.createEntity();
+
 
         pointsLabel = new SmallInforLabel("POINT: " , Pos.TOP_LEFT);
         timesLabel = new SmallInforLabel("TIME: " , Pos.TOP_LEFT);
@@ -110,6 +138,7 @@ public class BombermanGame extends Application {
                 switch (sceneToShow) {
                     case 0:
                         if (!gameStop && !gameOver) {
+                            stage.setScene(Gamescene);
                             if(index <= 0) {
                                 time--;
                                 index = 120;
@@ -128,12 +157,31 @@ public class BombermanGame extends Application {
                             nextLevel();
                         } else delay--;
                         break;
+                    case 3:
+                        stage.setScene(Menuscene);
                 }
 
             }
         };
         gameLoop.start();
     }
+
+    // LOGOUT
+    public void logout(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("You're about to exit");
+        alert.setContentText("Do you want to exit?");
+        alert.getDialogPane().getStylesheets().add(this.getClass().getClassLoader().getResource("ui/alert.css").toExternalForm());
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            stage.close();
+        }
+    }
+
+
+
 
     public void createMap() {
 

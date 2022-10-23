@@ -1,0 +1,8 @@
+#scenePane{
+    -fx-background-image: url("background_image.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-color: black;
+    -fx-background-size: 816 672;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}

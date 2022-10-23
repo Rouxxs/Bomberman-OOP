@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="scenePane" prefHeight="672.0" prefWidth="816.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.oop.bomberman.ScreenController">
+   <children>
+      <Button fx:id="button" layoutX="335.0" layoutY="217.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="146.0" stylesheets="@menu.css" text="Start game" />
+      <Label fx:id="Label" layoutX="275.0" layoutY="66.0" prefHeight="84.0" prefWidth="276.0" styleClass="Label" stylesheets="@menu.css" text="BOMBERMAN GAME" textFill="#475286" />
+      <Button fx:id="logoutbutton" layoutX="335.0" layoutY="471.0" mnemonicParsing="false" onAction="#logout" prefHeight="67.0" prefWidth="146.0" stylesheets="@menu.css" text="Exit" />
+      <Button fx:id="startmusic" layoutX="333.0" layoutY="336.0" mnemonicParsing="false" onAction="#playMusic" prefHeight="67.0" prefWidth="150.0" stylesheets="@menu.css" text="MUSIC : ON" />
+   </children>
+</AnchorPane>

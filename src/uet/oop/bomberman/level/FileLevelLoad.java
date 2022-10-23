@@ -2,6 +2,13 @@ package uet.oop.bomberman.level;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.Enemy.Balloon;
+import uet.oop.bomberman.entities.Enemy.Enemy;
+import uet.oop.bomberman.entities.Enemy.Oneal;
+import uet.oop.bomberman.entities.Item.BombItem;
+import uet.oop.bomberman.entities.Item.FlameItem;
+import uet.oop.bomberman.entities.Item.Item;
+import uet.oop.bomberman.entities.Item.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileReader;
@@ -13,13 +20,9 @@ public class FileLevelLoad {
     private int width;
     private int height;
     private int level;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
     public static char[][] map;
 
-    public FileLevelLoad(List<Entity> entities, List<Entity> stillObjects) {
-        this.entities = entities;
-        this.stillObjects = stillObjects;
+    public FileLevelLoad() {
     }
     public void loadLevel(int level) {
         try {
@@ -52,28 +55,56 @@ public class FileLevelLoad {
                 //System.out.print(c);
                 switch (c) {
                     case '#':
-                        Wall w =  new Wall(j, i, Sprite.wall.getFxImage());
-                        Grass g = new Grass(j, i, Sprite.grass.getFxImage());
-                        BombermanGame.addWall(w);
-                        BombermanGame.addGrass(g);
-                        stillObjects.add(w);
+                        BombermanGame.addWall(new Wall(j, i, Sprite.wall.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
                         break;
                     case '*':
-                        Brick b = new Brick(j, i, Sprite.brick.getFxImage());
-                        Grass gr = new Grass(j, i, Sprite.grass.getFxImage());
-                        BombermanGame.addBrick(b);
-                        BombermanGame.addGrass(gr);
-                        stillObjects.add(b);
+                        BombermanGame.addBrick(new Brick(j, i, Sprite.brick.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
                         break;
-
+                    case '1':
+                        BombermanGame.addEnemy(new Balloon(j, i, Sprite.balloom_left1.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
+                    case '2':
+                        BombermanGame.addEnemy(new Oneal(j, i, Sprite.oneal_left1.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
+                    case 'b':
+                        BombermanGame.addBrick(new Brick(j, i, Sprite.brick.getFxImage()));
+                        BombermanGame.addItem(new BombItem(j, i, Sprite.powerup_bombs.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
+                    case 'f':
+                        BombermanGame.addBrick(new Brick(j, i, Sprite.brick.getFxImage()));
+                        BombermanGame.addItem(new FlameItem(j, i, Sprite.powerup_flames.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
+                    case 's':
+                        BombermanGame.addBrick(new Brick(j, i, Sprite.brick.getFxImage()));
+                        BombermanGame.addItem(new SpeedItem(j, i, Sprite.powerup_speed.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
+                    case 'x':
+                        BombermanGame.addBrick(new Brick(j, i, Sprite.brick.getFxImage()));
+                        BombermanGame.addPortal(new Portal(j, i, Sprite.portal.getFxImage()));
+                        BombermanGame.addGrass(new Grass(j, i, Sprite.grass.getFxImage()));
+                        break;
                     default:
-                        Grass grass = new Grass(j, i, Sprite.grass.getFxImage());
-                        BombermanGame.addGrass(grass);
-                        stillObjects.add(grass);
+                        Grass grass1 = new Grass(j, i, Sprite.grass.getFxImage());
+                        BombermanGame.addGrass(grass1);
                         break;
                 }
             }
             //System.out.println("");
         }
+    }
+
+    public static char[][] getMap() {
+        return map;
+    }
+
+    public static void setMap(char[][] m) {
+        map = m;
     }
 }

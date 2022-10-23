@@ -7,6 +7,7 @@ public abstract class AnimatedEntity extends Entity {
     protected boolean _alive = true;
     protected boolean _moving = false;
     public int _timeAfter = 40;
+    protected int _finalAnimation = 100;
     protected int _animate = 0;
     protected final int MAX_ANIMATE = 7500;
 

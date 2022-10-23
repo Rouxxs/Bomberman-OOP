@@ -51,7 +51,7 @@ public class FlameSegment extends Entity {
     }
 
     @Override
-    public boolean collide(Entity e) {
-        return false;
+    public void collide() {
+        return;
     }
 }

@@ -2,6 +2,8 @@ package uet.oop.bomberman.entities.bomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.AnimatedEntity;
+import uet.oop.bomberman.entities.Enemy.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -23,7 +25,7 @@ public class Flame extends Entity {
 
     private void createFlameSegments() {
         flameSegments = new FlameSegment[calculateLength()];
-        System.out.println(calculateLength());
+        //System.out.println(calculateLength());
         boolean last;
         int xt = startX;
         int yt = startY;
@@ -66,6 +68,14 @@ public class Flame extends Entity {
 
             if (BombermanGame.wallCheck(dx, dy, this.w, this.h) ||
                     BombermanGame.brickCheck(dx, dy, this.w, this.h, true)) break;
+            Entity e = BombermanGame.getEntity(dx, dy, this.w, this.h);
+            if (e instanceof AnimatedEntity) {
+                ((AnimatedEntity) e).kill();
+                if (e instanceof Enemy) {
+                    BombermanGame.doPoint(((Enemy) e).getPoints());
+                }
+            }
+            if (e instanceof Bomb) ((Bomb) e).setTimeToExplode(-1);
             l++;
         }
         return l;
@@ -77,8 +87,8 @@ public class Flame extends Entity {
     }
 
     @Override
-    public boolean collide(Entity e) {
-        return false;
+    public void collide() {
+        return;
     }
 
     @Override

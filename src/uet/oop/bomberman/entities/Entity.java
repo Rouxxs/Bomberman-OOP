@@ -41,7 +41,7 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-    public abstract boolean collide(Entity e);
+    public abstract void collide();
     public void remove() {
         _removed = true;
     }

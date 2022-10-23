@@ -17,11 +17,12 @@ public class Bomber extends AnimatedEntity {
 //int i = 0;
     private float dx = 0;
     private float dy = 0;
+    private float speed;
     private int _direction;
     private boolean _moving;
     private Keyboard input;
     private int timeBetweenPutBombs = 0;
-    private int numberOfBomb = 2;
+    private int numberOfBomb = 1;
     private int flameLength = 1;
 
     public Bomber(int x, int y, Image img, Keyboard keyboard) {
@@ -29,18 +30,25 @@ public class Bomber extends AnimatedEntity {
         _moving = false;
         input = keyboard;
         solid = false;
+        speed = Const.MOVINGSPEED;
         setH(44);
         setW(35);
     }
 
     @Override
     public void update() {
+        animate();
+
+        if (!_alive) {
+            afterKill();
+            return;
+        }
         if (timeBetweenPutBombs < -7500) timeBetweenPutBombs = 0;
         else timeBetweenPutBombs--;
         move();
-        animate();
         changeImg();
         detectPlaceBomb();
+        collide();
     }
 
     /**
@@ -51,17 +59,17 @@ public class Bomber extends AnimatedEntity {
         dx = 0;
         dy = 0;
         if (input.getActiveKeys().contains(KeyCode.W)) {
-            dy -= Const.MOVINGSPEED;
+            dy -= speed;
             _direction = 0;
         } else if (input.getActiveKeys().contains(KeyCode.S)) {
 
-            dy = Const.MOVINGSPEED;
+            dy = speed;
             _direction = 1;
         } else if (input.getActiveKeys().contains(KeyCode.A)) {
-            dx -= Const.MOVINGSPEED;
+            dx -= speed;
             _direction = 2;
         } else if (input.getActiveKeys().contains(KeyCode.D)) {
-            dx = Const.MOVINGSPEED;
+            dx = speed;
             _direction = 3;
         }
 
@@ -87,7 +95,8 @@ public class Bomber extends AnimatedEntity {
         //System.out.println(String.format("X:" + xt + ", Y:" + yt));
 
         if (BombermanGame.wallCheck(xt, yt, this.w, this.h) ||
-                BombermanGame.brickCheck(xt, yt, this.w, this.h, false)) return false;
+                BombermanGame.brickCheck(xt, yt, this.w, this.h, false) ||
+                BombermanGame.bombCheck(xt, yt, this.w, this.h)) return false;
 //            if (e instanceof Wall || e instanceof Brick) {
 //                return false;
 //            }
@@ -133,11 +142,14 @@ public class Bomber extends AnimatedEntity {
         if (_alive) {
             changeImg();
         } else {
-            img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 40).getFxImage();
+            if(_timeAfter > 0) {
+                img = Sprite.player_dead1.getFxImage();
+                _animate = 0;
+            } else
+                img = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 120).getFxImage();
         }
-
         gc.drawImage(img, x, y);
-        gc.strokeRect(x, y, 35, 44);
+        //gc.strokeRect(x, y, 35, 44);
     }
 
     @Override
@@ -149,14 +161,20 @@ public class Bomber extends AnimatedEntity {
     @Override
     protected void afterKill() {
         if (_timeAfter > 0) --_timeAfter;
+        else {
+            if(_finalAnimation > 0) --_finalAnimation;
+            else {
+                System.out.println("yes");
+                remove();
+                BombermanGame.setGameOver(true);
+            }
+        }
     }
 
     @Override
-    public boolean collide(Entity e) {
-        if (e instanceof Enemy) {
-            kill();
-        }
-        return true;
+    public void collide() {
+        Entity e = BombermanGame.getEntity(x, y, w, h);
+        if (e instanceof Enemy) kill();
     }
 
     private void detectPlaceBomb() {
@@ -166,7 +184,7 @@ public class Bomber extends AnimatedEntity {
             int xb = Math.round(x / Sprite.SCALED_SIZE);
             int yb = Math.round(y / Sprite.SCALED_SIZE);
             placeBomb(xb, yb);
-            timeBetweenPutBombs = 60;
+            timeBetweenPutBombs = 40;
         }
     }
 
@@ -187,7 +205,11 @@ public class Bomber extends AnimatedEntity {
         return flameLength;
     }
 
-    public void increeFlameLength() {
+    public void increFlameLength() {
         flameLength++;
+    }
+
+    public void increSpeed() {
+        speed += 0.5;
     }
 }

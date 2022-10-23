@@ -1,14 +1,14 @@
 1 13 31
 ###############################
-#p     ** *  1 * 2 *  * * *   #
+#p     s* *  1 * 2 *  * * *   #
 # # # #*# # #*#*# # # #*#*#*# #
 #  x*     ***  *  1   * 2 * * #
 # # # # # #*# # #*#*# # # # #*#
-#f         x **  *  *   1     #
+#f         * **  *  *   1     #
 # # # # # # # # # #*# #*# # # #
-#*  *      *  *      *        #
+#*x *      *  *      *        #
 # # # # #*# # # #*#*# # # # # #
-#*    **  *       *           #
+#*    b*  *       *           #
 # #*# # # # # # #*# # # # # # #
 #           *   *  *          #
 ###############################
@@ -37,3 +37,20 @@ f - Flame Item
 s - Speed Item
 
 Kí tự khác các kí tự trên - Grass
+
+                        Canvas c = new Canvas(Sprite.SCALED_SIZE * Const.canvasWidth, Sprite.SCALED_SIZE * (Const.canvasHeight+1));
+                        GraphicsContext gc = canvas.getGraphicsContext2D();
+                        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+                        gc.setFill(Color.BLACK);
+                        gc.setTextAlign(TextAlignment.CENTER);
+                        gc.setTextBaseline(VPos.CENTER);
+                        gc.fillText(
+                                "Text centered on your Canvas",
+                                Math.round(c.getWidth()  / 2),
+                                Math.round(c.getHeight() / 2)
+                        );
+                        if (delay <= 0) {
+                            sceneToShow = 0;
+                            gc = canvas.getGraphicsContext2D();
+                            gameStop = false;
+                        } else delay--;

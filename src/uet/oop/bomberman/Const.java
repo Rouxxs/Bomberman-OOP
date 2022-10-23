@@ -3,7 +3,7 @@ package uet.oop.bomberman;
 import uet.oop.bomberman.entities.Entity;
 
 public class Const {
-    public static float MOVINGSPEED =  1;
+    public static int MOVINGSPEED =  1;
     public static enum GameStatus {
         Menu, Running, Paused, GameOver
     }

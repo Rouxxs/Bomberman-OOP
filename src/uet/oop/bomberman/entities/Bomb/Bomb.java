@@ -10,7 +10,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends AnimatedEntity {
-    private double timeToExplode = 240;
+    private double timeToExplode = 180;
     private int timeAfter = 60;
     private boolean exploded = false;
     private Flame[] flames;
@@ -51,8 +51,8 @@ public class Bomb extends AnimatedEntity {
     }
 
     @Override
-    public boolean collide(Entity e) {
-        return false;
+    public void collide() {
+        return;
     }
 
     @Override

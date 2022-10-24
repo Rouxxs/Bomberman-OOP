@@ -18,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -38,6 +40,7 @@ import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
 import uet.oop.bomberman.entities.bomb.Bomb;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +80,7 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         int test = 60;
-        System.out.println(getClass().getClassLoader().getResource("ui/menu.fxml").toExternalForm());
+       // System.out.println(getClass().getClassLoader().getResource("ui/menu.fxml").toExternalForm());
         Parent roots = FXMLLoader.load(getClass().getClassLoader().getResource("ui/menu.fxml"));
         stage.setTitle("Bomberman Game by Rou and Mika");
         Scene Menuscene = new Scene(roots);

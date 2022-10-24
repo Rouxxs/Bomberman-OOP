@@ -20,8 +20,12 @@ public class Portal extends Entity {
 
         if (BombermanGame.noEnemyLeft() &&
                 Const.collision(x, y, w, h, bomberman.getX(), bomberman.getY(), bomberman.getW(),bomberman.getH())) {
-            BombermanGame.setSceneToShow(1);
+            BombermanGame.setSceneToShow(2);
             BombermanGame.setGameStop(true);
+            if (BombermanGame.getLevel() >= 2) {
+                System.out.println("y");
+                BombermanGame.setSceneToShow(4);
+            }
         }
     }
 

@@ -64,11 +64,13 @@ public class BombermanGame extends Application {
     private static int time = 300;
     private int index = 120;
     private int delay = 120;
-    private static int sceneToShow = 3;
+    private static int sceneToShow = 0;
     private static boolean gameOver = false;
     private static boolean gameStop = false;
     private static int level = 1;
     ImageView level2;
+    ImageView gameOverImage;
+    ImageView victoryImage;
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -81,15 +83,12 @@ public class BombermanGame extends Application {
         Scene Menuscene = new Scene(roots);
         String css = this.getClass().getClassLoader().getResource("ui/style.css").toExternalForm();
         Menuscene.getStylesheets().add(css);
-        stage.setScene(Menuscene);
 
         //Them icon
         Image image = new Image("icon.png");
         stage.getIcons().add(image);
 
         //chay ra man hinh menu
-        stage.show();
-
         // Ho tro viec ALT + F4
         stage.setOnCloseRequest(event -> {
             event.consume();
@@ -102,7 +101,7 @@ public class BombermanGame extends Application {
         // Tao root container
         Group root = new Group();
         root.getChildren().add(canvas);
-
+        setSceneToShow(0);
         // Tao scene
         Scene Gamescene = new Scene(root);
         Gamescene.setOnKeyPressed(inputHandler);
@@ -110,8 +109,6 @@ public class BombermanGame extends Application {
         Gamescene.setFill(Color.LIGHTGREEN);
 
         // Them scene vao stage
-        stage.show();
-
         FileLevelLoad file = new FileLevelLoad();
         file.loadLevel(level);
         file.createEntity();
@@ -123,10 +120,23 @@ public class BombermanGame extends Application {
         pointsLabel.setLayoutY(0);
         root.getChildren().add(pointsLabel);
         root.getChildren().add(timesLabel);
+
         Image l2 = new Image("Level2.png");
         level2 = new ImageView(l2);
         level2.setVisible(false);
+        Image tmp = new Image("gameover.png");
+        gameOverImage = new ImageView(tmp);
+        gameOverImage.setVisible(false);
+        Image tmp1 = new Image("victory.png");
+        victoryImage = new ImageView(tmp1);
+        victoryImage.setVisible(false);
+
         root.getChildren().add(level2);
+        root.getChildren().add(gameOverImage);
+        root.getChildren().add(victoryImage);
+
+        stage.setScene(Menuscene);
+        stage.show();
         //System.out.println(AStar.aStarSearch(FileLevelLoad.map, new Pair<>(1, 1), new Pair<>(1, 4)));
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
@@ -137,6 +147,9 @@ public class BombermanGame extends Application {
 //                System.out.println(GameLoop.deltaTime);
                 switch (sceneToShow) {
                     case 0:
+                        stage.setScene(Menuscene);
+                        break;
+                    case 1:
                         if (!gameStop && !gameOver) {
                             stage.setScene(Gamescene);
                             if(index <= 0) {
@@ -148,9 +161,11 @@ public class BombermanGame extends Application {
                             } else index--;
                             render();
                             update();
+                        } else if (gameOver) {
+                            sceneToShow = 3;
                         }
                         break;
-                    case 1:
+                    case 2:
                         level2.setVisible(true);
                         if (delay <= 0) {
                             level2.setVisible(false);
@@ -158,7 +173,13 @@ public class BombermanGame extends Application {
                         } else delay--;
                         break;
                     case 3:
-                        stage.setScene(Menuscene);
+                        gameOverImage.setVisible(true);
+                        ScreenController.pauseMusic();
+                        break;
+                    case 4:
+                        victoryImage.setVisible(true);
+                        ScreenController.pauseMusic();
+                        break;
                 }
 
             }
@@ -364,7 +385,7 @@ public class BombermanGame extends Application {
         FileLevelLoad file = new FileLevelLoad();
         file.loadLevel(level);
         file.createEntity();
-        sceneToShow = 0;
+        sceneToShow = 1;
     }
 
     private static void reset() {
@@ -378,5 +399,7 @@ public class BombermanGame extends Application {
         bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
     }
 
-
+    public static int getLevel() {
+        return level;
+    }
 }

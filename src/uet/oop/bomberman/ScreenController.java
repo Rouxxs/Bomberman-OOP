@@ -28,7 +28,7 @@ public class ScreenController implements Initializable {
     private File directory;
     private File[] files;
     private Media media;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private int songnumber;
     @FXML
     private Button button;
@@ -79,7 +79,7 @@ public class ScreenController implements Initializable {
             e.printStackTrace();
         }
         stage.setScene(BombermanGame.Gamescene);
-        BombermanGame.setSceneToShow(0);
+        BombermanGame.setSceneToShow(1);
         //stage.show();
     }
 
@@ -101,5 +101,9 @@ public class ScreenController implements Initializable {
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.play();
+    }
+
+    public static void pauseMusic() {
+        mediaPlayer.pause();
     }
 }

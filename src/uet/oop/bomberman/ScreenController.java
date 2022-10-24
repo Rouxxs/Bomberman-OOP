@@ -88,6 +88,7 @@ public class ScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         button.setOnAction(this::onClick);
         ImageView background = new ImageView();
+        // READ MEDIA FILE
         songs = new ArrayList<File>();
         directory = new File("res/Music");
         files = directory.listFiles();

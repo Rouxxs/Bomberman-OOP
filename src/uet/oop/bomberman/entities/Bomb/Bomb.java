@@ -2,12 +2,16 @@ package uet.oop.bomberman.entities.bomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Const;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+
+import java.io.File;
 
 public class Bomb extends AnimatedEntity {
     private double timeToExplode = 180;
@@ -65,11 +69,22 @@ public class Bomb extends AnimatedEntity {
 
         }
         gc.drawImage(img, x, y);
+        /*String musicFile = "res/WAV/setbom.wav";     // For example
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();*/
+
     }
 
     private void explode() {
         exploded = true;
         BombermanGame.bomberman.increNumberOfBomb();
+        String musicFile = "res/WAV/explosion.wav";
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
 
         flames = new Flame[4];
         for (int i = 0; i < 4; i++) {

@@ -3,6 +3,8 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import uet.oop.bomberman.BombermanGame;
@@ -12,6 +14,8 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
 import uet.oop.bomberman.entities.bomb.Bomb;
+
+import java.io.File;
 
 public class Bomber extends AnimatedEntity {
 //int i = 0;
@@ -156,6 +160,12 @@ public class Bomber extends AnimatedEntity {
     public void kill() {
         if (!_alive) return;
         _alive = false;
+        String musicFile = "res/WAV/death.wav";     // For example
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+
     }
 
     @Override

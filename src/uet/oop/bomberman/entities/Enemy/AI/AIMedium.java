@@ -9,15 +9,15 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.FileLevelLoad;
 
 public class AIMedium extends AI {
-    Enemy e;
+    private Enemy e;
     public AIMedium(Enemy e) {
         this.e = e;
     }
     @Override
     public int calculateDirection() {
-        if (BombermanGame.bomberman == null || BombermanGame.bomberman.isRemoved()) return getRandomNumber(0, 4);
-        int destX = (int) Math.round(BombermanGame.bomberman.getX() / Sprite.SCALED_SIZE);
-        int destY = (int) Math.round(BombermanGame.bomberman.getY() / Sprite.SCALED_SIZE);
+        if (BombermanGame.getBomberman() == null || BombermanGame.getBomberman().isRemoved()) return getRandomNumber(0, 4);
+        int destX = (int) Math.round(BombermanGame.getBomberman().getX() / Sprite.SCALED_SIZE);
+        int destY = (int) Math.round(BombermanGame.getBomberman().getY() / Sprite.SCALED_SIZE);
 //        System.out.println("Bomber: " + destX + ", " + destY);
 
         int srcX = (int) Math.round(e.getX() / Sprite.SCALED_SIZE);

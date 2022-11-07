@@ -9,6 +9,8 @@ public abstract class Item extends Entity {
     public Item(int x, int y, Image image) {
         super(x, y, image);
         solid = false;
+        w = 45;
+        h = 45;
     }
     @Override
     public void update() {

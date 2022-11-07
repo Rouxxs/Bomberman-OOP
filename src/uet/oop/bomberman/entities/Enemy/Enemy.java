@@ -14,7 +14,6 @@ public abstract class Enemy extends AnimatedEntity {
     protected AI ai;
     protected int points;
     protected Image deadImg;
-    protected double steps = 48;
     protected double speed = 1;
     protected int countCall = 0;
 

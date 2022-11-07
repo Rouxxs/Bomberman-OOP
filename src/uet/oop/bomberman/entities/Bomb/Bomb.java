@@ -79,7 +79,7 @@ public class Bomb extends AnimatedEntity {
 
     private void explode() {
         exploded = true;
-        BombermanGame.bomberman.increNumberOfBomb();
+        BombermanGame.getBomberman().increNumberOfBomb();
         String musicFile = "res/WAV/explosion.wav";
 
         Media sound = new Media(new File(musicFile).toURI().toString());

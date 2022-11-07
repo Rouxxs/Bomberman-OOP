@@ -10,11 +10,12 @@ import uet.oop.bomberman.entities.Entity;
 
 import java.io.File;
 
-import static uet.oop.bomberman.BombermanGame.bomberman;
 
 public class BombItem extends Item {
+    private Bomber bomberman;
     public BombItem(int x, int y, Image image) {
         super(x, y, image);
+        bomberman = BombermanGame.getBomberman();
     }
 
     @Override

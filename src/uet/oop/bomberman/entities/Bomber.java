@@ -220,6 +220,6 @@ public class Bomber extends AnimatedEntity {
     }
 
     public void increSpeed() {
-        speed += 0.5;
+        speed += 1;
     }
 }

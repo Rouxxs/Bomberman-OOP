@@ -4,12 +4,12 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Const;
 
-import static uet.oop.bomberman.BombermanGame.bomberman;
-
 public class Portal extends Entity {
+    private Bomber bomberman;
 
     public Portal(float xUnit, float yUnit, Image img) {
         super(xUnit, yUnit, img);
+        bomberman = BombermanGame.getBomberman();
     }
 
     @Override

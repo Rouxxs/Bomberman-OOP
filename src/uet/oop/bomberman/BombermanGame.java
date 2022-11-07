@@ -2,10 +2,8 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,31 +14,16 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import uet.oop.bomberman.UI.SmallInforLabel;
-import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.Enemy.AI.AStar;
-import uet.oop.bomberman.entities.Enemy.Balloon;
-import uet.oop.bomberman.entities.Enemy.Enemy;
-import uet.oop.bomberman.entities.Enemy.Oneal;
-import uet.oop.bomberman.entities.Item.Item;
-import uet.oop.bomberman.entities.bomb.FlameSegment;
-import uet.oop.bomberman.graphics.Point;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.FileLevelLoad;
-import uet.oop.bomberman.entities.bomb.Bomb;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +31,7 @@ import java.util.List;
 public class BombermanGame extends Application {
     public static Scene Gamescene;
     private static GraphicsContext gc;
-    public static Scene Menuscene;
+    private static Scene Menuscene;
 
     private static Canvas canvas;
     private static Canvas c;
@@ -60,7 +43,7 @@ public class BombermanGame extends Application {
     private static List<Entity> items = new ArrayList<>();
     private static List<Entity> portals = new ArrayList<>();
     private static Keyboard inputHandler = new Keyboard();
-    public static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
+    private static Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage(), inputHandler);
     private SmallInforLabel pointsLabel;
     private SmallInforLabel timesLabel;
     private static int points = 0;
@@ -389,6 +372,10 @@ public class BombermanGame extends Application {
         file.loadLevel(level);
         file.createEntity();
         sceneToShow = 1;
+    }
+
+    public static Bomber getBomberman() {
+        return bomberman;
     }
 
     private static void reset() {

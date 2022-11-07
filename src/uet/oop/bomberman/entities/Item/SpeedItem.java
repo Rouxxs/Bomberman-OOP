@@ -3,15 +3,17 @@ package uet.oop.bomberman.entities.Item;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Const;
+import uet.oop.bomberman.entities.Bomber;
 
 import java.io.File;
 
-import static uet.oop.bomberman.BombermanGame.bomberman;
-
 public class SpeedItem extends Item {
+    private Bomber bomberman;
     public SpeedItem(int x, int y, Image image) {
         super(x, y, image);
+        bomberman = BombermanGame.getBomberman();
     }
 
     public void update() {
